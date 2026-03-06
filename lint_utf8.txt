@@ -1,0 +1,88 @@
+﻿
+> adotzee-student-frontend@0.1.0 lint
+> eslint
+
+
+D:\Webzio\Adotzee new\adotzee-student-frontend\app\colleges\[id]\page.tsx
+    4:10   warning  'motion' is defined but never used                                                                                                                                                                                                                                                       @typescript-eslint/no-unused-vars
+    5:10   warning  'Building2' is defined but never used                                                                                                                                                                                                                                                    @typescript-eslint/no-unused-vars
+    5:83   warning  'Sparkles' is defined but never used                                                                                                                                                                                                                                                     @typescript-eslint/no-unused-vars
+   10:10   warning  'College' is defined but never used                                                                                                                                                                                                                                                      @typescript-eslint/no-unused-vars
+   10:19   warning  'Course' is defined but never used                                                                                                                                                                                                                                                       @typescript-eslint/no-unused-vars
+   50:17   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  125:33   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  176:116  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                          react/no-unescaped-entities
+  176:206  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                          react/no-unescaped-entities
+  180:116  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                          react/no-unescaped-entities
+  180:205  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                          react/no-unescaped-entities
+
+D:\Webzio\Adotzee new\adotzee-student-frontend\app\colleges\page.tsx
+  45:26  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+D:\Webzio\Adotzee new\adotzee-student-frontend\app\courses\[id]\page.tsx
+  4:10  warning  'motion' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Webzio\Adotzee new\adotzee-student-frontend\app\courses\page.tsx
+  60:26  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+D:\Webzio\Adotzee new\adotzee-student-frontend\app\recommendations\page.tsx
+  11:10  warning  'Course' is defined but never used       @typescript-eslint/no-unused-vars
+  11:18  warning  'College' is defined but never used      @typescript-eslint/no-unused-vars
+  16:10  warning  'AddonCourse' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Webzio\Adotzee new\adotzee-student-frontend\app\search\page.tsx
+   4:20   warning  'useEffect' is defined but never used                            @typescript-eslint/no-unused-vars
+  11:10   warning  'Course' is defined but never used                               @typescript-eslint/no-unused-vars
+  11:18   warning  'College' is defined but never used                              @typescript-eslint/no-unused-vars
+  11:27   warning  'AddonCourse' is defined but never used                          @typescript-eslint/no-unused-vars
+  40:54   error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  86:147  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  86:161  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  91:95   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  91:109  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+D:\Webzio\Adotzee new\adotzee-student-frontend\components\cards\AddonCard.tsx
+  5:16  warning  'CardContent' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Webzio\Adotzee new\adotzee-student-frontend\components\cards\CollegeCard.tsx
+   5:16  warning  'CardContent' is defined but never used                                                                                                                                                                                                                                                  @typescript-eslint/no-unused-vars
+  31:33  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+D:\Webzio\Adotzee new\adotzee-student-frontend\components\cards\CourseCard.tsx
+   5:29  warning  'CardFooter' is defined but never used                                                                                                                                                                                                                                                   @typescript-eslint/no-unused-vars
+  35:29  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+D:\Webzio\Adotzee new\adotzee-student-frontend\components\sections\LiquidHero.tsx
+  5:10  warning  'Search' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Webzio\Adotzee new\adotzee-student-frontend\components\sections\MinimalColleges.tsx
+  4:10  warning  'Building2' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Webzio\Adotzee new\adotzee-student-frontend\components\sections\MinimalFooter.tsx
+  3:10  warning  'motion' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Webzio\Adotzee new\adotzee-student-frontend\components\sections\MinimalProtocol.tsx
+  3:10  warning  'motion' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Webzio\Adotzee new\adotzee-student-frontend\components\shared\Footer.tsx
+   2:10  warning  'GraduationCap' is defined but never used                                                                                                                                                                                                                                                @typescript-eslint/no-unused-vars
+  12:29  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+D:\Webzio\Adotzee new\adotzee-student-frontend\components\shared\Header.tsx
+   5:27  warning  'GraduationCap' is defined but never used                                                                                                                                                                                                                                                @typescript-eslint/no-unused-vars
+  28:21  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+D:\Webzio\Adotzee new\adotzee-student-frontend\components\shared\MinimalNavbar.tsx
+  3:10  warning  'motion' is defined but never used  @typescript-eslint/no-unused-vars
+
+D:\Webzio\Adotzee new\adotzee-student-frontend\components\ui\particle.tsx
+  7:10  warning  'init' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+D:\Webzio\Adotzee new\adotzee-student-frontend\lib\apiClient.ts
+  32:50  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+D:\Webzio\Adotzee new\adotzee-student-frontend\services\apiClient.ts
+  22:50  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+✖ 43 problems (13 errors, 30 warnings)
+
