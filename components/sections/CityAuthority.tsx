@@ -5,7 +5,7 @@ import { MapPin, Building2, GraduationCap, Map } from "lucide-react";
 
 const locations = [
     {
-        city: "Bangalore",
+        city: "Bengaluru",
         description: "The Silicon Valley of India, offering premier engineering and management institutes with great placement opportunities.",
         icon: Building2
     },

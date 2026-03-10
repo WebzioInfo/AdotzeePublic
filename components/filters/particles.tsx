@@ -1,3 +1,5 @@
+"use client";
+
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { useEffect, useState, useMemo } from "react";
 import { loadSlim } from "@tsparticles/slim";
