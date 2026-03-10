@@ -18,10 +18,46 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+import { COMPANY_INFO } from "@/lib/constants";
+
 export const metadata: Metadata = {
-  title: "Adotzee | Elite Education Discovery Protocol",
-  description: "Advanced institutional synchronization and strategic academic discovery platform.",
+  title: COMPANY_INFO.seo.title,
+  description: COMPANY_INFO.seo.description,
+  keywords: COMPANY_INFO.seo.keywords,
+  authors: [{ name: "Adotzee Team" }],
+  metadataBase: new URL(COMPANY_INFO.fullUrl),
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: COMPANY_INFO.seo.title,
+    description: COMPANY_INFO.seo.description,
+    url: COMPANY_INFO.fullUrl,
+    siteName: COMPANY_INFO.name,
+    locale: "en_IN",
+    type: "website",
+    images: [
+      {
+        url: "/Logos/AdotzeeLogoTextNoBG.png",
+        width: 1200,
+        height: 630,
+        alt: COMPANY_INFO.name,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: COMPANY_INFO.seo.title,
+    description: COMPANY_INFO.seo.description,
+    images: ["/Logos/AdotzeeLogoTextNoBG.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
+
+import { StickyBottomCTA } from "@/components/shared/StickyBottomCTA";
 
 export default function RootLayout({
   children,
@@ -43,6 +79,7 @@ export default function RootLayout({
           </main>
           <WhatsAppButton />
           <LeadFormModal />
+          <StickyBottomCTA />
           <Toaster position="top-center" expand={false} richColors />
         </Providers>
       </body>

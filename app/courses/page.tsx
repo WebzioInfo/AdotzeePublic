@@ -69,12 +69,13 @@ function CoursesContent() {
     return (
         <div className="bg-background min-h-screen">
             <div className="container px-4 md:px-6 py-16 lg:py-24 mx-auto">
-                <div className="flex flex-col mb-16 space-y-4">
+                <div className="flex flex-col mb-16 space-y-4 text-center items-center">
                     <h1 className="text-4xl md:text-6xl font-black tracking-tight text-white leading-tight">
-                        Discover <span className="text-transparent bg-clip-text bg-linear-to-r from-[#2563EB] to-[#60A5FA]">Courses</span>
+                        Degree Courses After <span className="text-transparent bg-clip-text bg-linear-to-r from-[#2563EB] to-[#60A5FA]">Plus Two</span>
                     </h1>
                     <p className="text-lg md:text-xl text-slate-400 max-w-2xl leading-relaxed font-light">
-                        Unlock your future with our curated list of premier academic programs. Use precision filters to find your ideal career path.
+                        Explore popular courses like BBA, BCA, B.Com, Allied Health, and Engineering.
+                        Get personalized guidance on picking the right course for your career goals.
                     </p>
                 </div>
 
@@ -148,7 +149,7 @@ function CoursesContent() {
                         {isLoading ? (
                             <div className="grid grid-cols-1 gap-6">
                                 {[...Array(6)].map((_, i) => (
-                                    <Skeleton key={i} className="h-44 w-full rounded-2xl bg-card border border-border" />
+                                    <Skeleton key={i} className="h-22 w-full rounded-2xl bg-card border border-border" />
                                 ))}
                             </div>
                         ) : filteredCourses.length > 0 ? (
@@ -183,7 +184,7 @@ export default function CoursesPage() {
         <Suspense fallback={
             <div className="container px-4 py-20 mx-auto flex flex-col items-center justify-center">
                 <Loader2 className="size-10 text-[#60A5FA] animate-spin mb-4" />
-                <p className="text-slate-400 font-bold uppercase tracking-widest animate-pulse">Scanning Course Registry</p>
+                <p className="text-slate-400 font-bold uppercase tracking-widest animate-pulse">Finding the right courses...</p>
             </div>
         }>
             <CoursesContent />

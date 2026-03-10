@@ -23,7 +23,7 @@ function CollegesContent() {
         const params = new URLSearchParams();
         if (searchTerm) params.set("q", searchTerm);
         if (locationFilter) params.set("city", locationFilter);
-
+        console.log(filteredColleges)
         const query = params.toString();
         router.replace(query ? `?${query}` : "/colleges", { scroll: false });
     }, [searchTerm, locationFilter, router]);
@@ -52,14 +52,15 @@ function CollegesContent() {
     }
 
     return (
-        <div className="bg-background min-h-screen py-16 lg:py-24">
+        <div className="bg-blue-100 min-h-screen py-16 lg:py-24">
             <div className="container px-4 md:px-6 mx-auto">
                 <div className="flex flex-col text-center items-center mb-16 space-y-4">
-                    <h1 className="text-4xl md:text-6xl font-black tracking-tight text-white leading-tight">
-                        Premium <span className="text-transparent bg-clip-text bg-linear-to-r from-[#2563EB] to-[#60A5FA]">Institutions</span>
+                    <h1 className="text-4xl md:text-6xl font-black tracking-tight text-blue-400 leading-tight">
+                        Best Colleges in <span className="text-transparent bg-clip-text bg-linear-to-r from-[#2563EB] to-[#60A5FA]">South India</span> After Plus Two
                     </h1>
                     <p className="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed font-light">
-                        Explore world-class campuses, cutting-edge facilities, and prestigious academic environments. Find the perfect foundation for your success.
+                        Discover top-ranked institutions in Bangalore, Mangalore, Mysore, and Coimbatore.
+                        Find the right campus for your UG or PG degree with expert admission assistance.
                     </p>
                 </div>
 
@@ -108,7 +109,7 @@ function CollegesContent() {
                     {isLoading ? (
                         <div className="grid grid-cols-1 gap-8">
                             {[...Array(4)].map((_, i) => (
-                                <Skeleton key={i} className="h-72 w-full rounded-3xl bg-card border border-border" />
+                                <Skeleton key={i} className="h-40 w-full rounded-3xl bg-card border border-border" />
                             ))}
                         </div>
                     ) : filteredColleges.length > 0 ? (
@@ -139,7 +140,7 @@ export default function CollegesPage() {
         <Suspense fallback={
             <div className="bg-background min-h-screen flex flex-col items-center justify-center">
                 <Loader2 className="size-16 text-[#60A5FA] animate-spin mb-6 drop-shadow-[0_0_15px_rgba(96,165,250,0.5)]" />
-                <p className="text-slate-400 font-bold uppercase tracking-widest animate-pulse">Synchronizing Intelligence...</p>
+                <p className="text-slate-400 font-bold uppercase tracking-widest animate-pulse">Loading Colleges...</p>
             </div>
         }>
             <CollegesContent />

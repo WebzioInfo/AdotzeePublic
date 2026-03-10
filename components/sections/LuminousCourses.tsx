@@ -5,26 +5,26 @@ import { ArrowUpRight } from "lucide-react";
 
 export function LuminousCourses() {
     return (
-        <section className="py-24 bg-transparent relative overflow-hidden">
+        <section className="py-16 md:py-24 bg-transparent relative overflow-hidden">
             <div className="container mx-auto px-6 max-w-[1200px] relative z-10">
-                <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+                <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-12 md:mb-16 gap-6 text-center md:text-left">
                     <div>
-                        <h2 className="text-4xl md:text-6xl font-black text-[#0F172A] tracking-tighter mb-4">
-                            Elevated Tracks.
+                        <h2 className="text-4xl md:text-6xl font-black text-foreground tracking-tighter mb-4">
+                            Popular Courses.
                         </h2>
                         <p className="text-xl text-[#0F172A] font-medium opacity-70 max-w-xl">
-                            Hyper-focused academic pathways synchronized for the future.
+                            Find the right degree program after Plus Two to kickstart your career.
                         </p>
                     </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
                     {[
-                        { title: "Advanced Neural Systems", tags: ["AI", "4 Years"], span: "md:col-span-6" },
-                        { title: "Quantum Architectures", tags: ["Deep Tech", "5 Years"], span: "md:col-span-3" },
-                        { title: "Global Management", tags: ["Business", "3 Years"], span: "md:col-span-3" },
-                        { title: "Biomedical Analytics", tags: ["Health", "4 Years"], span: "md:col-span-4" },
-                        { title: "Robotics & Automation", tags: ["Hardware", "4 Years"], span: "md:col-span-8" }
+                        { title: "Computer Applications (BCA)", tags: ["Technology", "3 Years"], span: "md:col-span-6" },
+                        { title: "Business Administration (BBA)", tags: ["Management", "3 Years"], span: "md:col-span-3" },
+                        { title: "B.Tech Computer Science", tags: ["Engineering", "4 Years"], span: "md:col-span-3" },
+                        { title: "Allied Health Sciences", tags: ["Medicine", "4 Years"], span: "md:col-span-4" },
+                        { title: "Commerce (B.Com)", tags: ["Accounting", "3 Years"], span: "md:col-span-8" }
                     ].map((course, i) => (
                         <div
                             key={i}
@@ -43,7 +43,7 @@ export function LuminousCourses() {
                                 </div>
                             </div>
 
-                            <h3 className="text-2xl font-black text-[#0F172A] tracking-tight relative z-10">
+                            <h3 className="text-2xl font-black text-foreground tracking-tight relative z-10">
                                 {course.title}
                             </h3>
 

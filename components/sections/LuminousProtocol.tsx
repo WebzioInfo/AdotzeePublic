@@ -8,10 +8,10 @@ export function LuminousProtocol() {
             <div className="container mx-auto px-6 max-w-[1200px] relative z-10">
                 <div className="text-center max-w-2xl mx-auto mb-20">
                     <h2 className="text-4xl md:text-6xl font-black text-[#0F172A] tracking-tighter mb-4">
-                        The Liquid Protocol
+                        Simple Admission Process
                     </h2>
                     <p className="text-xl text-[#0F172A] font-medium opacity-70 leading-loose">
-                        A seamless, fluid transition from profile analysis to finalized enrollment.
+                        A smooth, expert-led journey from choosing a course to finalizing your college enrollment.
                     </p>
                 </div>
 
@@ -20,9 +20,9 @@ export function LuminousProtocol() {
                     <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-[#E0F2FE] via-[#2563EB] to-transparent rounded-full transform md:-translate-x-1/2 opacity-30" />
 
                     {[
-                        { step: "01", title: "Cognitive Ingestion", desc: "Our engine maps your constraints and targets against our global syllabus matrix." },
-                        { step: "02", title: "Algorithmic Matching", desc: "Fluidly filtering through thousands of data points to present only hyper-relevant pathways." },
-                        { step: "03", title: "Strategic Execution", desc: "One-click application synchronization directly into verified institutional portals." }
+                        { step: "01", title: "Profile Analysis", desc: "Our experts analyze your Plus Two scores, interests, and career goals to map your optimal path." },
+                        { step: "02", title: "College Matching", desc: "We find the best colleges in Bangalore, Mangalore, and Mysore that fit your budget and preference." },
+                        { step: "03", title: "Expert Guidance", desc: "Complete your admission process with full support for applications, fees, and campus synchronization." }
                     ].map((item, i) => (
                         <motion.div
                             initial={{ opacity: 0, y: 50 }}

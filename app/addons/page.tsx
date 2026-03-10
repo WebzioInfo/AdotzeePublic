@@ -51,10 +51,10 @@ export default function AddonsPage() {
                 <div className="container px-4 md:px-6 mx-auto relative z-10 text-center">
                     <div className="max-w-4xl mx-auto">
                         <h1 className="text-5xl md:text-8xl font-black tracking-tighter mb-8 leading-tight">
-                            Strategic <span className="text-transparent bg-clip-text bg-linear-to-r from-[#2563EB] to-[#60A5FA]">Specializations</span>
+                            Skill <span className="text-transparent bg-clip-text bg-linear-to-r from-[#2563EB] to-[#60A5FA]">Certifications</span>
                         </h1>
                         <p className="text-xl text-slate-400 leading-relaxed font-light mx-auto max-w-2xl">
-                            Calibrate your competitive advantage with industry-verified micro-credentials and advanced technical tracks.
+                            Improve your career opportunities with specialized certificates and industry-verified training programs.
                         </p>
                     </div>
                 </div>
