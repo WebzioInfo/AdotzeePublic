@@ -1,146 +1,174 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { motion } from "framer-motion";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useColleges } from "@/hooks/useData";
-import { CollegeCard } from "@/components/cards/CollegeCard";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Search, Loader2, MapPin } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { apiClient } from "@/services/apiClient";
+import { Loader2, ArrowLeft, ChevronRight, GraduationCap } from "lucide-react";
+import Link from "next/link";
 
 function CollegesContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
+    
+    // All data from previous steps
+    const streamName = searchParams.get("streamName") || "";
+    const courseName = searchParams.get("courseName") || "";
+    const addonId = searchParams.get("addonId") || "";
+    const addonName = searchParams.get("addonName") || "None";
 
-    const [searchTerm, setSearchTerm] = useState(searchParams.get("q") || "");
-    const [locationFilter, setLocationFilter] = useState(searchParams.get("city") || "");
+    const [colleges, setColleges] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [submitting, setSubmitting] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-    const { data: colleges, isLoading, error } = useColleges();
-
-    // Sync state with URL
     useEffect(() => {
-        const params = new URLSearchParams();
-        if (searchTerm) params.set("q", searchTerm);
-        if (locationFilter) params.set("city", locationFilter);
-        console.log(filteredColleges)
-        const query = params.toString();
-        router.replace(query ? `?${query}` : "/colleges", { scroll: false });
-    }, [searchTerm, locationFilter, router]);
+        const fetchColleges = async () => {
+            setLoading(true);
+            try {
+                // If addonId is missing, we use default colleges or handle via API
+                const data = await apiClient.get(`/Addons/${addonId}/colleges`);
+                setColleges(Array.isArray(data) ? data : []);
+            } catch (err: any) {
+                setError(err.message || "Failed to load colleges for this specialization.");
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    const filteredColleges = (colleges || []).filter((college) => {
-        const matchesSearch = college.name.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesLocation = locationFilter === "" ||
-            college.city.toLowerCase().includes(locationFilter.toLowerCase()) ||
-            college.state.toLowerCase().includes(locationFilter.toLowerCase());
+        fetchColleges();
+    }, [addonId]);
 
-        return matchesSearch && matchesLocation;
-    });
+    const handleCollegeSelect = async (collegeName: string) => {
+        setSubmitting(true);
+        setError(null);
+        try {
+            // 1. Execute POST /api/Leads
+            const leadPayload = {
+                fullName: "Student from Web",
+                courseInterested: `${courseName}${addonName !== 'None' ? ` with ${addonName}` : ''}`,
+                collegeInterested: collegeName,
+                source: 1 // 1 = Website
+            };
+            
+            await apiClient.post("/Leads", leadPayload).catch(e => {
+                console.warn("Lead tracking failed but continuing redirect:", e);
+                return null;
+            });
 
-    if (error) {
-        return (
-            <div className="container px-4 py-20 mx-auto text-center">
-                <div className="bg-red-50 text-red-800 p-6 rounded-2xl border border-red-100 max-w-2xl mx-auto">
-                    <h2 className="text-2xl font-bold mb-2">Service Temporarily Unavailable</h2>
-                    <p>We're having trouble connecting to the Adotzee backend. Please try again later.</p>
-                    <Button onClick={() => window.location.reload()} className="mt-4 bg-red-600 hover:bg-red-700">
-                        Retry Connection
-                    </Button>
-                </div>
-            </div>
-        );
-    }
+            // 2. Redirect to WhatsApp
+            const message = `Hi, I'm interested in admission.\n\nMy Selection Summary:\nStream: ${streamName}\nCourse: ${courseName}\nSpecialization: ${addonName}\nPreferred College: ${collegeName}`;
+            const whatsappUrl = `https://wa.me/918281060462?text=${encodeURIComponent(message)}`;
+            
+            window.open(whatsappUrl, "_blank");
+            
+            // Optionally redirect to a thank you page or back home
+            router.push("/");
+        } catch (err: any) {
+            setError("Failed to process your request. Please try again.");
+            setSubmitting(false);
+        }
+    };
 
     return (
-        <div className="bg-blue-100 min-h-screen py-16 lg:py-24">
-            <div className="container px-4 md:px-6 mx-auto">
-                <div className="flex flex-col text-center items-center mb-16 space-y-4">
-                    <h1 className="text-4xl md:text-6xl font-black tracking-tight text-blue-400 leading-tight">
-                        Best Colleges in <span className="text-transparent bg-clip-text bg-linear-to-r from-[#2563EB] to-[#60A5FA]">South India</span> After Plus Two
-                    </h1>
-                    <p className="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed font-light">
-                        Discover top-ranked institutions in Bangalore, Mangalore, Mysore, and Coimbatore.
-                        Find the right campus for your UG or PG degree with expert admission assistance.
-                    </p>
-                </div>
-
-                {/* Search & Filters */}
-                <div className="bg-card p-4 md:p-8 rounded-3xl border border-border shadow-2xl max-w-5xl mx-auto mb-16 backdrop-blur-md">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="relative group">
-                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-slate-500 group-focus-within:text-[#2563EB] transition-colors" />
-                            <Input
-                                placeholder="Search institutions by name..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                className="pl-12 h-14 text-lg bg-background/50 border-border focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB] transition-all text-white placeholder:text-slate-500 rounded-xl"
-                            />
-                        </div>
-                        <div className="relative flex items-center group">
-                            <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-slate-500 group-focus-within:text-[#2563EB] transition-colors" />
-                            <Input
-                                type="text"
-                                placeholder="Filter by City or State (e.g., Kochi)"
-                                value={locationFilter}
-                                onChange={(e) => setLocationFilter(e.target.value)}
-                                className="pl-12 h-14 text-lg bg-background/50 border-border focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB] transition-all text-white placeholder:text-slate-500 rounded-xl"
-                            />
-                            {(searchTerm || locationFilter) && (
-                                <Button
-                                    variant="ghost"
-                                    onClick={() => { setSearchTerm(""); setLocationFilter(""); }}
-                                    className="absolute right-2 text-slate-500 hover:text-white hover:bg-white/5 h-10 px-3"
-                                >
-                                    Clear
-                                </Button>
-                            )}
-                        </div>
+        <main className="min-h-screen bg-white py-24 px-6 relative overflow-hidden">
+            <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-50 rounded-full blur-[120px] opacity-40" />
+            
+            <div className="max-w-7xl mx-auto relative z-10">
+                {/* Navigation */}
+                <button 
+                    onClick={() => router.back()} 
+                    className="inline-flex items-center text-slate-400 font-bold hover:text-blue-600 transition-colors group mb-12"
+                >
+                    <div className="p-2 rounded-full bg-slate-50 group-hover:bg-blue-50 mr-4 transition-colors">
+                        <ArrowLeft className="w-5 h-5" />
                     </div>
+                    Back to Specializations
+                </button>
+
+                {/* Header */}
+                <div className="mb-16">
+                    <motion.span 
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="text-blue-600 font-black uppercase tracking-widest text-sm"
+                    >
+                        Final Step
+                    </motion.span>
+                    <motion.h1 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-4xl md:text-7xl font-black text-slate-900 mt-4 tracking-tighter leading-tight"
+                    >
+                        Success! These Colleges offer <br/>
+                        <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-indigo-500">{courseName}</span>
+                    </motion.h1>
+                    <p className="text-slate-500 font-medium text-xl mt-6">Select a college to confirm your interest and connect with our experts on WhatsApp.</p>
                 </div>
 
-                {/* Results Grid - using single column for wider cards */}
-                <div className="max-w-6xl mx-auto">
-                    <div className="mb-8 text-sm text-slate-500 font-bold uppercase tracking-widest h-6">
-                        {!isLoading && (
-                            <>{filteredColleges.length} institution{filteredColleges.length !== 1 ? 's' : ''} available</>
+                {/* Content */}
+                {loading || submitting ? (
+                    <div className="flex flex-col items-center justify-center py-32">
+                        <Loader2 className="w-20 h-20 text-blue-500 animate-spin mb-8" />
+                        <p className="text-slate-400 font-black uppercase tracking-[0.4em] text-xs">
+                            {submitting ? "Finalizing your Lead..." : "Finding your Future..."}
+                        </p>
+                    </div>
+                ) : error ? (
+                    <div className="bg-red-50 p-12 rounded-[3rem] border border-red-100 text-center max-w-2xl mx-auto">
+                        <p className="text-red-600 font-bold mb-8 text-xl">{error}</p>
+                        <button onClick={() => window.location.reload()} className="bg-slate-900 text-white px-12 py-4 rounded-full font-black hover:bg-slate-800 transition-all">Retry</button>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {colleges.length > 0 ? colleges.map((college, idx) => (
+                            <motion.button
+                                key={college.id}
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: idx * 0.1 }}
+                                onClick={() => handleCollegeSelect(college.name || college.title)}
+                                className="bg-white p-12 rounded-[3.5rem] border border-slate-100 shadow-sm hover:shadow-[0_40px_80px_-15px_rgba(37,99,235,0.15)] hover:border-blue-500 transition-all text-left group relative overflow-hidden"
+                            >
+                                <div className="mb-10">
+                                    <div className="w-16 h-16 rounded-[1.5rem] bg-blue-50 flex items-center justify-center mb-8 group-hover:bg-blue-600 transition-colors">
+                                        <GraduationCap className="w-8 h-8 text-blue-600 group-hover:text-white transition-colors" />
+                                    </div>
+                                    <h3 className="text-2xl font-black text-slate-800 leading-tight mb-4">{college.name || college.title}</h3>
+                                    <div className="flex items-center text-green-600 font-black text-[10px] uppercase tracking-widest border border-green-100 bg-green-50 px-3 py-1 rounded-full w-fit">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-green-500 mr-2 animate-pulse" />
+                                        Direct Admission
+                                    </div>
+                                </div>
+                                
+                                <div className="mt-8 flex items-center justify-between border-t border-slate-50 pt-8 italic">
+                                    <span className="text-slate-400 font-bold text-sm group-hover:text-blue-600 transition-colors">Connect with expert</span>
+                                    <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center shadow-lg shadow-green-200 group-hover:scale-110 transition-transform">
+                                        <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.183-.573c.978.58 1.711.927 2.898.927 3.181 0 5.768-2.585 5.769-5.766 0-3.181-2.587-5.769-5.769-5.769zM15.42 14.155c-.173.486-.879.914-1.336.969-.383.045-.823.136-2.583-.591-2.133-.879-3.482-3.129-3.585-3.268-.103-.139-.854-1.139-.854-2.172s.541-1.536.726-1.748c.184-.213.401-.266.533-.266.132 0 .264.001.381.006.126.006.294-.049.46.349.173.414.595 1.45.646 1.554.052.103.085.228.019.359-.066.132-.101.213-.198.328-.096.115-.205.253-.292.351-.096.107-.197.227-.083.424.113.197.502.833 1.08 1.353.748.673 1.369.882 1.567.986.197.103.313.086.429-.047.115-.132.497-.581.63-.781.132-.197.264-.165.446-.096.182.069 1.15.542 1.348.641.197.098.329.148.376.228.048.081.048.468-.125.954z"/></svg>
+                                    </div>
+                                </div>
+                            </motion.button>
+                        )) : (
+                            <div className="col-span-full py-32 text-center bg-slate-50 rounded-[4rem] border-2 border-dashed border-slate-200">
+                                <p className="text-slate-400 font-bold text-2xl mb-8">No specific colleges found for this module.</p>
+                                <Link href="https://wa.me/918281060462" target="_blank">
+                                    <button className="bg-blue-600 text-white px-16 py-6 rounded-full font-black shadow-2xl hover:bg-blue-700 transition-all hover:scale-105 active:scale-95">Consult Admissions Expert</button>
+                                </Link>
+                            </div>
                         )}
                     </div>
-
-                    {isLoading ? (
-                        <div className="grid grid-cols-1 gap-8">
-                            {[...Array(4)].map((_, i) => (
-                                <Skeleton key={i} className="h-40 w-full rounded-3xl bg-card border border-border" />
-                            ))}
-                        </div>
-                    ) : filteredColleges.length > 0 ? (
-                        <div className="grid grid-cols-1 gap-8">
-                            {filteredColleges.map((college, index) => (
-                                <CollegeCard key={college.id} college={college} index={index} />
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="flex flex-col items-center justify-center py-32 bg-card/30 rounded-3xl border border-border border-dashed">
-                            <div className="p-6 bg-white/5 rounded-2xl mb-6">
-                                <Search className="size-10 text-slate-600" />
-                            </div>
-                            <h3 className="text-2xl font-bold text-white mb-3">No institutions found</h3>
-                            <p className="text-slate-400 mb-8 max-w-sm text-center leading-relaxed">
-                                We couldn&apos;t find any institutions matching your search criteria. Try a different city or name.
-                            </p>
-                        </div>
-                    )}
-                </div>
+                )}
             </div>
-        </div>
+        </main>
     );
 }
 
 export default function CollegesPage() {
     return (
         <Suspense fallback={
-            <div className="bg-background min-h-screen flex flex-col items-center justify-center">
-                <Loader2 className="size-16 text-[#60A5FA] animate-spin mb-6 drop-shadow-[0_0_15px_rgba(96,165,250,0.5)]" />
-                <p className="text-slate-400 font-bold uppercase tracking-widest animate-pulse">Loading Colleges...</p>
+            <div className="min-h-screen bg-white flex flex-col items-center justify-center">
+                <Loader2 className="w-12 h-12 text-blue-500 animate-spin mb-4" />
+                <span className="text-xs font-black text-slate-300 uppercase tracking-widest">Loading Colleges</span>
             </div>
         }>
             <CollegesContent />

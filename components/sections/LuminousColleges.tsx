@@ -7,18 +7,18 @@ import { MapPin, ShieldCheck } from "lucide-react";
 export function LuminousColleges() {
     const colleges = [
         {
-            name: "Bangalore City Campus",
+            name: "Presidency University",
             location: "Bengaluru, Karnataka",
             tier: "Top Ranked",
             span: "md:col-span-7",
-            image: "/colleges/bangalore.jpg"
+            image: "/colleges/presidency.jpg"
         },
         {
-            name: "Mangalore Education Hub",
-            location: "Mangaluru, Karnataka",
+            name: "BGS Medical College",
+            location: "Bengaluru, Karnataka",
             tier: "Verified Partner",
             span: "md:col-span-5",
-            image: "/colleges/mangalore.jpg"
+            image: "/colleges/bgs.jpg"
         }
     ];
 

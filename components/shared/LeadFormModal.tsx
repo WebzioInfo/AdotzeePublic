@@ -189,9 +189,10 @@ export function LeadFormModal() {
                 setTimeout(() => setCurrentStep(0), 300);
             }
         }}>
-            <DialogContent className="sm:max-w-[520px] bg-[#020617] border border-white/5 rounded-[2.5rem] p-0 overflow-hidden shadow-2xl">
+            <DialogContent className="sm:max-w-[520px] bg-white border border-slate-200 rounded-[2.5rem] p-0 overflow-hidden shadow-2xl">
                 {/* Progress Bar */}
-                <div className="absolute top-0 left-0 w-full h-1.5 bg-white/5 z-50">
+                <div className="absolute top-0 left-0 w-full h-1.5 bg-slate-200 z-50"
+                >
                     <motion.div
                         className="h-full bg-blue-600"
                         initial={{ width: "0%" }}
@@ -202,7 +203,7 @@ export function LeadFormModal() {
 
                 <div className="flex flex-col h-full max-h-[90vh]">
                     <div className="p-8 md:p-10 pb-0">
-                        <DialogHeader className="mb-6">
+                        <DialogHeader className="mb-0">
                             <div className="flex items-center gap-2 mb-4">
                                 <span className="px-3 py-1 rounded-full bg-blue-600/10 text-blue-400 text-[10px] font-black uppercase tracking-widest border border-blue-500/20">
                                     Step {currentStep + 1} of {STEPS.length}
@@ -210,18 +211,20 @@ export function LeadFormModal() {
                                 {currentStep > 0 && (
                                     <button
                                         onClick={prevStep}
-                                        className="text-slate-500 hover:text-white transition-colors flex items-center gap-1 text-xs font-bold"
+                                        className="text-slate-600 hover:text-white transition-colors flex items-center gap-1 text-xs font-bold"
                                     >
                                         <ChevronLeft className="w-4 h-4" /> Back
                                     </button>
                                 )}
                             </div>
-                            <DialogTitle className="text-3xl font-black text-white tracking-tight mb-2">
+                            <DialogTitle className="text-3xl font-black text-slate-900 tracking-tight mb-2"
+                            >
                                 {currentStep === 0 && "Kickstart Your Career"}
                                 {currentStep === 1 && "Customized For You"}
                                 {currentStep === 2 && "Final Few Details"}
                             </DialogTitle>
-                            <DialogDescription className="text-slate-400 text-base font-medium leading-relaxed">
+                            <DialogDescription className="text-slate-600 text-base font-medium leading-relaxed"
+                            >
                                 {currentStep === 0 && "Join 5,000+ students who found their dream college through Adotzee."}
                                 {currentStep === 1 && "Tell us what you're looking for so we can find the perfect match."}
                                 {currentStep === 2 && "Anything else you'd like us to know? Our experts are ready to help."}
@@ -251,9 +254,10 @@ export function LeadFormModal() {
                                                     name="name"
                                                     render={({ field }) => (
                                                         <FormItem>
-                                                            <FormLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Full Name</FormLabel>
+                                                            <FormLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-600">Full Name</FormLabel>
                                                             <FormControl>
-                                                                <Input placeholder="Enter your full name" {...field} className="h-14 bg-white/5 border-white/10 text-white focus:ring-blue-600 rounded-2xl" />
+                                                                <Input placeholder="Enter your full name" {...field} className="h-14 bg-white border-slate-300 text-slate-900 focus:ring-2 focus:ring-blue-600 rounded-2xl"
+                                                                />
                                                             </FormControl>
                                                             <FormMessage />
                                                         </FormItem>
@@ -264,9 +268,10 @@ export function LeadFormModal() {
                                                     name="phone"
                                                     render={({ field }) => (
                                                         <FormItem>
-                                                            <FormLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Phone Number</FormLabel>
+                                                            <FormLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-600">Phone Number</FormLabel>
                                                             <FormControl>
-                                                                <Input placeholder="Mobile number" {...field} className="h-14 bg-white/5 border-white/10 text-white focus:ring-blue-600 rounded-2xl" />
+                                                                <Input placeholder="Mobile number" {...field} className="h-14 bg-white border-slate-300 text-slate-900 focus:ring-2 focus:ring-blue-600 rounded-2xl"
+                                                                />
                                                             </FormControl>
                                                             <FormMessage />
                                                         </FormItem>
@@ -277,9 +282,10 @@ export function LeadFormModal() {
                                                     name="email"
                                                     render={({ field }) => (
                                                         <FormItem>
-                                                            <FormLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Email Address</FormLabel>
+                                                            <FormLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-600">Email Address</FormLabel>
                                                             <FormControl>
-                                                                <Input type="email" placeholder="email@example.com" {...field} className="h-14 bg-white/5 border-white/10 text-white focus:ring-blue-600 rounded-2xl" />
+                                                                <Input type="email" placeholder="email@example.com" {...field} className="h-14 bg-white border-slate-300 text-slate-900 focus:ring-2 focus:ring-blue-600 rounded-2xl"
+                                                                />
                                                             </FormControl>
                                                             <FormMessage />
                                                         </FormItem>
@@ -295,7 +301,7 @@ export function LeadFormModal() {
                                                     name="interestedCourse"
                                                     render={({ field }) => (
                                                         <FormItem>
-                                                            <FormLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Course Preference</FormLabel>
+                                                            <FormLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-600">Course Preference</FormLabel>
                                                             <div className="flex flex-wrap gap-2 mb-3">
                                                                 {QUICK_COURSES.map((course) => (
                                                                     <button
@@ -304,7 +310,7 @@ export function LeadFormModal() {
                                                                         onClick={() => form.setValue("interestedCourse", course)}
                                                                         className={`px-4 py-2 text-[11px] font-bold border rounded-xl transition-all ${form.watch("interestedCourse") === course
                                                                             ? "bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-600/20"
-                                                                            : "bg-white/5 border-white/10 text-slate-400 hover:border-white/20 hover:text-white"
+                                                                            : "bg-white border-slate-300 text-slate-700 hover:border-slate-400 hover:text-slate-900"
                                                                             }`}
                                                                     >
                                                                         {course}
@@ -312,7 +318,8 @@ export function LeadFormModal() {
                                                                 ))}
                                                             </div>
                                                             <FormControl>
-                                                                <Input placeholder="Search or type course" {...field} className="h-14 bg-white/5 border-white/10 text-white focus:ring-blue-600 rounded-2xl" />
+                                                                <Input placeholder="Search or type course" {...field} className="h-14 bg-white border-slate-300 text-slate-900 focus:ring-2 focus:ring-blue-600 rounded-2xl"
+                                                                />
                                                             </FormControl>
                                                             <FormMessage />
                                                         </FormItem>
@@ -323,9 +330,10 @@ export function LeadFormModal() {
                                                     name="preferredCity"
                                                     render={({ field }) => (
                                                         <FormItem>
-                                                            <FormLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Preferred City</FormLabel>
+                                                            <FormLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-600">Preferred City</FormLabel>
                                                             <FormControl>
-                                                                <Input placeholder="Ex: Bangalore, Mangalore" {...field} className="h-14 bg-white/5 border-white/10 text-white focus:ring-blue-600 rounded-2xl" />
+                                                                <Input placeholder="Ex: Bangalore, Mangalore" {...field} className="h-14 bg-white border-slate-300 text-slate-900 focus:ring-2 focus:ring-blue-600 rounded-2xl"
+                                                                />
                                                             </FormControl>
                                                             <FormMessage />
                                                         </FormItem>
@@ -341,11 +349,12 @@ export function LeadFormModal() {
                                                     name="message"
                                                     render={({ field }) => (
                                                         <FormItem>
-                                                            <FormLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Questions (Optional)</FormLabel>
+                                                            <FormLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-600">Questions (Optional)</FormLabel>
                                                             <FormControl>
                                                                 <Textarea
                                                                     placeholder="Tell us about your requirements or any specific colleges you have in mind..."
-                                                                    className="resize-none min-h-[140px] bg-white/5 border-white/10 text-white focus:ring-blue-600 rounded-2xl p-4"
+                                                                    className="resize-none min-h-[140px] bg-white border border-slate-300 text-slate-900 focus:ring-2 focus:ring-blue-600 rounded-2xl p-4"
+
                                                                     {...field}
                                                                 />
                                                             </FormControl>
@@ -353,7 +362,7 @@ export function LeadFormModal() {
                                                         </FormItem>
                                                     )}
                                                 />
-                                                <div className="bg-blue-600/5 border border-blue-500/10 rounded-2xl p-4 flex items-start gap-3">
+                                                <div className="bg-blue-50 border border-blue-200 text-slate-500 rounded-2xl p-4 flex items-start gap-3">
                                                     <ShieldCheck className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
                                                     <p className="text-[11px] text-slate-400 font-medium leading-normal">
                                                         Your data is 100% secure. Adotzee follows strict privacy protocols to ensure your information is only used for admission guidance.
@@ -367,7 +376,7 @@ export function LeadFormModal() {
                         </Form>
                     </div>
 
-                    <div className="p-8 md:p-10 pt-4 bg-[#020617] border-t border-white/5">
+                    <div className="p-8 md:p-10 pt-4 bg-white border-t border-slate-200">
                         <div className="flex gap-4 mb-6">
                             {currentStep < STEPS.length - 1 ? (
                                 <Button
@@ -404,7 +413,7 @@ export function LeadFormModal() {
                     background: transparent;
                 }
                 .custom-scrollbar::-webkit-scrollbar-thumb {
-                    background: rgba(255, 255, 255, 0.1);
+                    background: rgba(0,0,0,0.15);
                     border-radius: 10px;
                 }
                 .custom-scrollbar::-webkit-scrollbar-thumb:hover {

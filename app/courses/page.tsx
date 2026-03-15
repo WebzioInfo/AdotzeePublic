@@ -1,190 +1,132 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { motion } from "framer-motion";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useCourses } from "@/hooks/useData";
-import { CourseCard } from "@/components/cards/CourseCard";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
-import { Search, FilterX, Loader2 } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { apiClient } from "@/services/apiClient";
+import { Loader2, ArrowLeft, ChevronRight } from "lucide-react";
+import Link from "next/link";
 
 function CoursesContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
+    const stream = searchParams.get("stream") || "";
+    const streamName = searchParams.get("streamName") || "";
 
-    const [searchTerm, setSearchTerm] = useState(searchParams.get("q") || "");
-    const [levelFilter, setLevelFilter] = useState(searchParams.get("level") || "all");
-    const [streamFilter, setStreamFilter] = useState(searchParams.get("stream") || "all");
+    const [courses, setCourses] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
-    const { data: courses, isLoading, error } = useCourses();
-
-    // Sync state with URL
     useEffect(() => {
-        const params = new URLSearchParams();
-        if (searchTerm) params.set("q", searchTerm);
-        if (levelFilter !== "all") params.set("level", levelFilter);
-        if (streamFilter !== "all") params.set("stream", streamFilter);
+        if (!stream) {
+            router.push("/");
+            return;
+        }
 
-        const query = params.toString();
-        router.replace(query ? `?${query}` : "/courses", { scroll: false });
-    }, [searchTerm, levelFilter, streamFilter, router]);
+        const fetchCourses = async () => {
+            setLoading(true);
+            try {
+                console.log(stream);
+                const data = await apiClient.get(`/Courses/filter?stream=${stream}`);
+                setCourses(Array.isArray(data) ? data : []);
+            } catch (err: any) {
+                console.log(err)
+                setError(err.message || "Failed to load courses. Please try again.");
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    const filteredCourses = (courses || []).filter((course) => {
-        const matchesSearch = course.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            course.description.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesLevel = levelFilter === "all" || course.level === levelFilter;
-        const matchesStream = streamFilter === "all" || course.stream === streamFilter;
+        fetchCourses();
+    }, [stream, router]);
 
-        return matchesSearch && matchesLevel && matchesStream;
-    });
-
-    const clearFilters = () => {
-        setSearchTerm("");
-        setLevelFilter("all");
-        setStreamFilter("all");
+    const handleCourseSelect = (courseId: string, courseName: string) => {
+        router.push(`/addons?courseId=${courseId}&courseName=${encodeURIComponent(courseName)}&streamName=${encodeURIComponent(streamName)}&stream=${stream}`);
     };
 
-    if (error) {
-        return (
-            <div className="container px-4 py-20 mx-auto text-center">
-                <div className="bg-red-50 text-red-800 p-6 rounded-2xl border border-red-100 max-w-2xl mx-auto">
-                    <h2 className="text-2xl font-bold mb-2">Service Temporarily Unavailable</h2>
-                    <p>We're having trouble connecting to the Adotzee backend. Please try again later.</p>
-                    <Button onClick={() => window.location.reload()} className="mt-4 bg-red-600 hover:bg-red-700">
-                        Retry Connection
-                    </Button>
-                </div>
-            </div>
-        );
-    }
-
     return (
-        <div className="bg-background min-h-screen">
-            <div className="container px-4 md:px-6 py-16 lg:py-24 mx-auto">
-                <div className="flex flex-col mb-16 space-y-4 text-center items-center">
-                    <h1 className="text-4xl md:text-6xl font-black tracking-tight text-white leading-tight">
-                        Degree Courses After <span className="text-transparent bg-clip-text bg-linear-to-r from-[#2563EB] to-[#60A5FA]">Plus Two</span>
-                    </h1>
-                    <p className="text-lg md:text-xl text-slate-400 max-w-2xl leading-relaxed font-light">
-                        Explore popular courses like BBA, BCA, B.Com, Allied Health, and Engineering.
-                        Get personalized guidance on picking the right course for your career goals.
-                    </p>
+        <main className="min-h-screen bg-white py-24 px-6 relative overflow-hidden">
+            {/* Aesthetic backgrounds to match Hero */}
+            <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-50 rounded-full blur-[120px] opacity-40" />
+            <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-indigo-50 rounded-full blur-[120px] opacity-40" />
+
+            <div className="max-w-5xl mx-auto relative z-10">
+                {/* Navigation */}
+                <Link href="/" className="inline-flex items-center text-slate-400 font-bold hover:text-blue-600 transition-colors group mb-12">
+                    <div className="p-2 rounded-full bg-slate-50 group-hover:bg-blue-50 mr-4 transition-colors">
+                        <ArrowLeft className="w-5 h-5" />
+                    </div>
+                    Back to Streams
+                </Link>
+
+                {/* Header */}
+                <div className="mb-16">
+                    <motion.span 
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="text-blue-600 font-black uppercase tracking-widest text-sm"
+                    >
+                        Step 02
+                    </motion.span>
+                    <motion.h1 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-5xl md:text-7xl font-black text-slate-900 mt-4 tracking-tighter"
+                    >
+                        Available Courses in <br/>
+                        <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-indigo-500">{streamName}</span>
+                    </motion.h1>
                 </div>
 
-                <div className="flex flex-col lg:flex-row gap-10 items-start">
-                    {/* Filters Sidebar */}
-                    <aside className="w-full lg:w-72 shrink-0 space-y-6 lg:sticky lg:top-28">
-                        <div className="bg-card p-6 rounded-2xl border border-border shadow-xl space-y-8 backdrop-blur-sm">
-                            <div className="flex items-center justify-between border-b border-border pb-4">
-                                <h3 className="font-bold text-xl text-white">Filters</h3>
-                                {(searchTerm || levelFilter !== "all" || streamFilter !== "all") && (
-                                    <Button variant="ghost" size="sm" onClick={clearFilters} className="h-8 px-2 text-slate-400 hover:text-white hover:bg-white/5">
-                                        <FilterX className="size-4 mr-1.5" /> Clear
-                                    </Button>
-                                )}
-                            </div>
-
-                            <div className="space-y-4">
-                                <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Search</label>
-                                <div className="relative group">
-                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-500 group-focus-within:text-[#2563EB] transition-colors" />
-                                    <Input
-                                        placeholder="E.g., Computer Science"
-                                        value={searchTerm}
-                                        onChange={(e) => setSearchTerm(e.target.value)}
-                                        className="pl-10 bg-background/50 border-border focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB] transition-all h-11"
-                                    />
+                {/* Content */}
+                {loading ? (
+                    <div className="flex flex-col items-center justify-center py-32">
+                        <Loader2 className="w-16 h-16 text-blue-500 animate-spin mb-6" />
+                        <p className="text-slate-400 font-black uppercase tracking-[0.3em] text-xs">Fetching Admissions...</p>
+                    </div>
+                ) : error ? (
+                    <div className="bg-red-50 p-12 rounded-[3rem] border border-red-100 text-center">
+                        <p className="text-red-600 font-bold mb-8 text-xl">{error}</p>
+                        <button onClick={() => window.location.reload()} className="bg-slate-900 text-white px-12 py-4 rounded-full font-black hover:bg-slate-800 transition-all">Retry</button>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {courses.length > 0 ? courses.map((course, idx) => (
+                            <motion.button
+                                key={course.id}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: idx * 0.05 }}
+                                onClick={() => handleCourseSelect(course.id, course.name || course.title)}
+                                className="group p-8 text-left bg-white border-2 border-slate-50 rounded-[2.5rem] hover:border-blue-500 hover:shadow-2xl transition-all flex justify-between items-center"
+                            >
+                                <div className="flex flex-col">
+                                    <span className="text-slate-400 font-black text-[10px] uppercase tracking-widest mb-2">Course Module</span>
+                                    <span className="text-2xl font-black text-slate-800 leading-tight">{course.name || course.title}</span>
                                 </div>
-                            </div>
-
-                            <div className="space-y-4">
-                                <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Level</label>
-                                <Select value={levelFilter} onValueChange={setLevelFilter}>
-                                    <SelectTrigger className="bg-background/50 border-border h-11">
-                                        <SelectValue placeholder="All Levels" />
-                                    </SelectTrigger>
-                                    <SelectContent className="bg-card border-border">
-                                        <SelectItem value="all">All Levels</SelectItem>
-                                        <SelectItem value="UG">Undergraduate (UG)</SelectItem>
-                                        <SelectItem value="PG">Postgraduate (PG)</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-
-                            <div className="space-y-4">
-                                <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Stream</label>
-                                <Select value={streamFilter} onValueChange={setStreamFilter}>
-                                    <SelectTrigger className="bg-background/50 border-border h-11">
-                                        <SelectValue placeholder="All Streams" />
-                                    </SelectTrigger>
-                                    <SelectContent className="bg-card border-border">
-                                        <SelectItem value="all">All Streams</SelectItem>
-                                        <SelectItem value="Science">Science</SelectItem>
-                                        <SelectItem value="Commerce">Commerce</SelectItem>
-                                        <SelectItem value="Arts">Arts</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                        </div>
-                    </aside>
-
-                    {/* Results Grid */}
-                    <div className="flex-1 min-w-0 w-full">
-                        <div className="mb-8 flex items-center justify-between h-6">
-                            <div className="text-sm text-slate-500 font-semibold tracking-wide uppercase">
-                                {!isLoading && (
-                                    <>{filteredCourses.length} results found</>
-                                )}
-                            </div>
-                        </div>
-
-                        {isLoading ? (
-                            <div className="grid grid-cols-1 gap-6">
-                                {[...Array(6)].map((_, i) => (
-                                    <Skeleton key={i} className="h-22 w-full rounded-2xl bg-card border border-border" />
-                                ))}
-                            </div>
-                        ) : filteredCourses.length > 0 ? (
-                            <div className="grid grid-cols-1 gap-6">
-                                {filteredCourses.map((course, index) => (
-                                    <CourseCard key={course.id} course={course} index={index} />
-                                ))}
-                            </div>
-                        ) : (
-                            <div className="flex flex-col items-center justify-center py-32 bg-card/30 rounded-3xl border border-border border-dashed">
-                                <div className="p-6 bg-white/5 rounded-2xl mb-6">
-                                    <Search className="size-10 text-slate-600" />
+                                <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center group-hover:bg-blue-600 transition-colors shadow-sm">
+                                    <ChevronRight className="w-6 h-6 text-slate-300 group-hover:text-white transition-colors" />
                                 </div>
-                                <h3 className="text-2xl font-bold text-white mb-3">No programs found</h3>
-                                <p className="text-slate-400 mb-8 max-w-sm text-center leading-relaxed">
-                                    We couldn&apos;t find any programs matching your current filters. Try broadening your criteria.
-                                </p>
-                                <Button onClick={clearFilters} variant="secondary" className="font-bold border border-white/5">
-                                    Reset Discovery
-                                </Button>
+                            </motion.button>
+                        )) : (
+                            <div className="col-span-full py-24 text-center">
+                                <p className="text-slate-400 font-bold text-xl mb-6 italic">No courses found matching this header.</p>
+                                <Link href="/" className="text-blue-600 font-black underline decoration-2 underline-offset-8">Try another stream</Link>
                             </div>
                         )}
                     </div>
-                </div>
+                )}
             </div>
-        </div>
+        </main>
     );
 }
 
 export default function CoursesPage() {
     return (
         <Suspense fallback={
-            <div className="container px-4 py-20 mx-auto flex flex-col items-center justify-center">
-                <Loader2 className="size-10 text-[#60A5FA] animate-spin mb-4" />
-                <p className="text-slate-400 font-bold uppercase tracking-widest animate-pulse">Finding the right courses...</p>
+            <div className="min-h-screen bg-white flex flex-col items-center justify-center">
+                <Loader2 className="w-12 h-12 text-blue-500 animate-spin mb-4" />
+                <span className="text-xs font-black text-slate-300 uppercase tracking-widest">Loading Courses</span>
             </div>
         }>
             <CoursesContent />
